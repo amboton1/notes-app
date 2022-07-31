@@ -1,20 +1,21 @@
 const express = require('express');
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 const cors = require('cors');
+const { connectDB } = require('./config/db');
 const port = process.env.PORT || 5000;
 
 const app = express();
 
-app.use(cors({
+connectDB();
+
+/* app.use(cors({
     origin: '*',
     credentials: true
-}));
+})); */
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-app.get('/api/notes', (req, res) => {
-    res.status(200).json({message: 'Get notes'})
-})
+app.use('/api/notes', require('./routes/routes'));
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));
